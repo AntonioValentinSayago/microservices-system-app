@@ -1,3 +1,8 @@
+import format from 'date-fns/format'
+import parseISO from 'date-fns/parseISO'
+import { es } from 'date-fns/locale'
+import isThisMonth from 'date-fns/isThisMonth'
+
 const contenedorGastos = document.querySelector('#gastos .gastos__lista');
 
 const cargarGastos = () => {
@@ -5,21 +10,33 @@ const cargarGastos = () => {
     const gastos = JSON.parse(window.localStorage.getItem('gastos'));
     
     if (gastos && gastos.length > 0) {
-        
+
+        const gastosDelMes = gastos.filter( (gasto) => {
+
+            if(isThisMonth(parseISO(gasto.fecha))){
+                return gasto;
+            };
+
+        })
         //No haya DATOS en el DOM
         document.querySelector('#gastos .gastos__mensaje').classList.remove('gastos__mensaje--active');
         contenedorGastos.innerHTML = '';
 
-        gastos.forEach((element) => {
+        const formatoMoneda = new Intl.NumberFormat('en-MX', { style: 'currency', currency: 'MXN' });
+
+        gastosDelMes.forEach((element) => {
+
+            const precio = formatoMoneda.format(element.precio);
+
             contenedorGastos.innerHTML += 
             `
             <div class="gasto" data-id="${element.id}">
 				<div class="gasto__info">
 					<div>
 						<p class="gasto__nombre">${element.descripcion}</p>
-						<p class="gasto__cantidad">${element.precio}</p>
+						<p class="gasto__cantidad">${precio}</p>
 					</div>
-					<p class="gasto__fecha">1 de enero de 2022</p>
+					<p class="gasto__fecha">${format(parseISO(element.fecha), "d 'de' MMMM  'de' yyyy ", {locale: es})}</p>
 				</div>
 				<div class="gasto__acciones">
 					<button class="gasto__btn" data-accion="editar-gasto">
