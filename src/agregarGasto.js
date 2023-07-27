@@ -1,3 +1,7 @@
+import {v4 as uuidv4} from 'uuid';
+import {cerrarFormularioGasto } from './eventoBtnFormularioGasto'
+import cargarGastos from './cargarGastos';
+
 const formulario = document.querySelector('#formulario-gasto form');
 const descripcion = formulario.descripcion;
 const precio = formulario.precio;
@@ -65,4 +69,35 @@ precio.addEventListener('keyup', (e) => {
 
 });
 
+//Formulario y Boton para agregar
+formulario.addEventListener('submit', (e) => {
+    e.preventDefault()
 
+    if(comprobarDescripcion() && comprobarPrecio()){
+        
+        const nuevoGasto = {
+            id: uuidv4(),
+            fecha: new Date(),
+            descripcion: descripcion.value,
+            precio: precio.value
+        }
+        const gastosGuardadosLocalStorage = JSON.parse(window.localStorage.getItem('gastos'));
+
+        if(gastosGuardadosLocalStorage){
+            //Creamos nueva lista de gastos incluyendo el Nuevo
+            const nuevosGastos = [...gastosGuardadosLocalStorage, nuevoGasto]
+            window.localStorage.setItem('gastos', JSON.stringify(nuevosGastos))
+            
+        } else {
+            //Agregamos el primer Gasto
+            window.localStorage.setItem('gastos', JSON.stringify([{...nuevoGasto}]))
+        }
+
+        descripcion.value = ''
+        precio.value = ''
+
+        cargarGastos();
+        cerrarFormularioGasto();
+    }
+
+})
