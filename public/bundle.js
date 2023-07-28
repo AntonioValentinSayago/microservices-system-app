@@ -2981,7 +2981,7 @@ var locale = {
 };
 var es = locale;
 
-const contenedorGastos = document.querySelector('#gastos .gastos__lista');
+const contenedorGastos$1 = document.querySelector('#gastos .gastos__lista');
 
 const cargarGastos = () => {
 
@@ -2997,7 +2997,7 @@ const cargarGastos = () => {
         });
         //No haya DATOS en el DOM
         document.querySelector('#gastos .gastos__mensaje').classList.remove('gastos__mensaje--active');
-        contenedorGastos.innerHTML = '';
+        contenedorGastos$1.innerHTML = '';
 
         const formatoMoneda = new Intl.NumberFormat('en-MX', { style: 'currency', currency: 'MXN' });
 
@@ -3005,7 +3005,7 @@ const cargarGastos = () => {
 
             const precio = formatoMoneda.format(element.precio);
 
-            contenedorGastos.innerHTML += 
+            contenedorGastos$1.innerHTML += 
             `
             <div class="gasto" data-id="${element.id}">
 				<div class="gasto__info">
@@ -3058,7 +3058,7 @@ const cargarGastos = () => {
 
     }else {
         //No haya DATOS en el DOM
-        contenedorGastos.innerHTML = '';
+        contenedorGastos$1.innerHTML = '';
         document.querySelector('#gastos .gastos__mensaje').classList.add('gastos__mensaje--active');
     }
 
@@ -3188,6 +3188,61 @@ formulario.addEventListener('submit', (e) => {
         cargarGastos();
         cerrarFormularioGasto();
         cargarTotalGastado();
+    }
+
+});
+
+const contenedorGastos = document.getElementById('gastos');
+contenedorGastos.addEventListener('click', (e) => {
+
+   const gasto = e.target.closest('.gasto');
+
+   //Comprobamos si estamos haciendo click en el gasto 
+   if(gasto){
+        if(gasto.scrollLeft > 0){
+
+            gasto.querySelector('.gasto__info').scrollIntoView({
+                behavior: 'smooth',
+                inline: 'start',
+                block: 'nearest'
+            });
+            
+        }else {
+
+            gasto.querySelector('.gasto__acciones').scrollIntoView({
+                behavior: 'smooth',
+                inline: 'start',
+                block: 'nearest'
+            });
+
+        }
+   }
+
+   //Funcionalidad para el Boton de Editar 
+   if(e.target.closest('[data-accion="editar-gasto"]')){
+
+        const id = gasto.dataset.id;
+        const gastosGuardados = JSON.parse(window.localStorage.getItem('gastos'));
+
+        let cantidad = '', descripcion = '' ;
+        
+        if(gastosGuardados && gastosGuardados.length > 0){
+
+            gastosGuardados.forEach((gasto) => {
+
+                if ( gasto.id === id ) {
+                    cantidad = gasto.precio;
+                    descripcion = gasto.descripcion;
+                }
+
+            });
+
+            // Le ponemos la descripcion a cada input del formulario
+            document.querySelector('#formulario-gasto #descripcion').value = descripcion;
+            document.querySelector('#formulario-gasto #precio').value = cantidad;
+
+            abrirFormularioGasto();
+        }
     }
 
 });
