@@ -34,6 +34,7 @@ contenedorGastos.addEventListener('click', (e) => {
 
         let cantidad = '', descripcion = '' ;
         
+        //Se comprueba de hay datos guardados en el local storage
         if(gastosGuardados && gastosGuardados.length > 0){
 
             gastosGuardados.forEach((gasto) => {
