@@ -16,7 +16,7 @@ boton.addEventListener('click', (e) => {
     if([...formularioGasto.classList].includes('formulario-gasto--active')){
         cerrarFormularioGasto()
     }else {
-        abrirFormularioGasto();
+        abrirFormularioGasto(); // Se invoca la formulario
     }
 
 })
