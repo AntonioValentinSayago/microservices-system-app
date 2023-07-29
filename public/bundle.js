@@ -3,10 +3,22 @@
 const boton = document.getElementById('toggle-form-gasto');
 const formularioGasto = document.getElementById('formulario-gasto');
 
-const abrirFormularioGasto = () => {
+const abrirFormularioGasto = (modo = 'agregarGasto') => {
 
     boton.classList.add('agregar-gasto__btn--active');
     formularioGasto.classList.add('formulario-gasto--active');
+
+    if (modo === 'editarGasto') {
+        document.querySelector('.formulario-gasto__titulo').innerText = "Editar Gasto";
+        document.querySelector('.formulario-gasto__btn').innerText = "Editar Gasto";
+        document.getElementById('formulario-gasto').dataset.modo = "editarGasto";
+    }else {
+        document.getElementById('descripcion').value = '';
+        document.getElementById('precio').value = '';
+        document.querySelector('.formulario-gasto__titulo').innerText = "Agregar Gasto";
+        document.querySelector('.formulario-gasto__btn').innerText = "Agregar Gasto";
+        document.getElementById('formulario-gasto').dataset.modo = "agregarGasto";
+    }
 };
 
 const cerrarFormularioGasto = () => {
@@ -3226,6 +3238,7 @@ contenedorGastos.addEventListener('click', (e) => {
 
         let cantidad = '', descripcion = '' ;
         
+        //Se comprueba de hay datos guardados en el local storage
         if(gastosGuardados && gastosGuardados.length > 0){
 
             gastosGuardados.forEach((gasto) => {
@@ -3240,8 +3253,9 @@ contenedorGastos.addEventListener('click', (e) => {
             // Le ponemos la descripcion a cada input del formulario
             document.querySelector('#formulario-gasto #descripcion').value = descripcion;
             document.querySelector('#formulario-gasto #precio').value = cantidad;
+            document.querySelector('#formulario-gasto').dataset.id = id;
 
-            abrirFormularioGasto();
+            abrirFormularioGasto('editarGasto');
         }
     }
 

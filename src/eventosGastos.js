@@ -49,6 +49,7 @@ contenedorGastos.addEventListener('click', (e) => {
             // Le ponemos la descripcion a cada input del formulario
             document.querySelector('#formulario-gasto #descripcion').value = descripcion;
             document.querySelector('#formulario-gasto #precio').value = cantidad;
+            document.querySelector('#formulario-gasto').dataset.id = id;
 
             abrirFormularioGasto('editarGasto');
         }
