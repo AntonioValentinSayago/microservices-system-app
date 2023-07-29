@@ -74,6 +74,10 @@ precio.addEventListener('keyup', (e) => {
 formulario.addEventListener('submit', (e) => {
     e.preventDefault()
 
+    //Obtenemos el modo del formulario
+    const modo = formulario.closest('#formulario-gasto')?.dataset?.modo;
+        
+    // Comprobamos que la descreiprion y el precio sean correctos
     if(comprobarDescripcion() && comprobarPrecio()){
         
         const nuevoGasto = {
@@ -82,18 +86,44 @@ formulario.addEventListener('submit', (e) => {
             descripcion: descripcion.value,
             precio: precio.value
         }
+
         const gastosGuardadosLocalStorage = JSON.parse(window.localStorage.getItem('gastos'));
 
-        if(gastosGuardadosLocalStorage){
-            //Creamos nueva lista de gastos incluyendo el Nuevo
-            const nuevosGastos = [...gastosGuardadosLocalStorage, nuevoGasto]
-            window.localStorage.setItem('gastos', JSON.stringify(nuevosGastos))
-            
-        } else {
-            //Agregamos el primer Gasto
-            window.localStorage.setItem('gastos', JSON.stringify([{...nuevoGasto}]))
+        if (modo === 'agregarGasto') {
+            //Comprovamos si hay Datso 
+            if(gastosGuardadosLocalStorage){
+                //Creamos nueva lista de gastos incluyendo el Nuevo
+                const nuevosGastos = [...gastosGuardadosLocalStorage, nuevoGasto]
+                window.localStorage.setItem('gastos', JSON.stringify(nuevosGastos))   
+            } else {
+                //Agregamos el primer Gasto
+                window.localStorage.setItem('gastos', JSON.stringify([{...nuevoGasto}]))
+            }
+        }else if(modo === 'editarGasto'){
+            //Obtener el ID del gasto a editar
+            const id = document.getElementById('formulario-gasto').dataset?.id;
+            let indexGastoAEditar;
+            if (id && gastosGuardadosLocalStorage) {
+                gastosGuardadosLocalStorage.forEach(( gasto, index ) => {
+                    if (gasto.id === id) {
+                        indexGastoAEditar = index;
+                    }
+                })
+            }
+
+            //Hacemos una copia de los gastos guardados para poder editarla
+            const nuevoGasto = [...gastosGuardadosLocalStorage];
+            nuevoGasto[indexGastoAEditar] = {
+                ...gastosGuardadosLocalStorage[indexGastoAEditar],
+                descripcion: descripcion.value,
+                precio: precio.value
+            }
+            //Remplazamos el Localstorage con los nuevos gastos
+            window.localStorage.setItem('gastos', JSON.stringify(nuevoGasto));
+        
         }
 
+        //Reiniciamos los campos del input
         descripcion.value = ''
         precio.value = ''
 
