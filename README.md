@@ -1,4 +1,4 @@
-# App de Gastos Generales con Javascript y Roollup 1.1.4
+# App de Gastos Generales con Javascript y Roollup 1.1.5
 
 This project was generated with [Rollup, Javascript](https://github.com/AntonioValentinSayago/app-gastosGenerales-javascript) version 14.2.5
 
