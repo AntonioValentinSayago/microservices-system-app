@@ -1,6 +1,6 @@
-# App de Gastos Generales con Javascript y Roollup 2.3.7
+# School System with microservices 1.0.0
 
-This project was generated with [Rollup, Javascript](https://github.com/AntonioValentinSayago/app-gastosGenerales-javascript) version 14.2.5
+This project was generated with [Node JS, Javascript, TypeScript, React](https://github.com/AntonioValentinSayago/microservices-system-app) version 14.2.5
 
 ## Development server 
 
