@@ -1,4 +1,4 @@
-# School System with microservices 1.0.0
+# School System with microservices 1.0.1
 
 This project was generated with [Node JS, Javascript, TypeScript, React](https://github.com/AntonioValentinSayago/microservices-system-app) version 14.2.5
 
